@@ -24,6 +24,32 @@ function Income() {
     const [source, setSource] = useState('');
     const [date, setDate] = useState('');
 
+    ChartJS.register(ArcElement, Tooltip, Legend);
+
+    const [incomeData, setIncomeData] = useState({
+        labels : [],
+        datasets : [
+            {
+                label : 'Amount',
+                data : [ ],
+            }
+        ]
+    })
+
+    const updateChartData = (sources, amounts) => {
+        setIncomeData({
+            labels: sources,
+            datasets: [
+                {
+                    data: amounts,
+                    backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderWidth: 1,
+                },
+            ],
+        });
+    };
+
     const updateIncomeTotal = (numericAmount) => {
         setIncomeTotal(prevIncomeTotal => prevIncomeTotal + numericAmount);
     }
@@ -31,21 +57,26 @@ function Income() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const numericAmount = parseFloat(amount);
-
+    
         if (!isNaN(numericAmount) && numericAmount !== 0) {
             const url = 'http://127.0.0.1:8000/user/income/';
-
+    
             try {
                 const response = await axios.post(url, {
                     amount: numericAmount,
                     source: source,
                     date: date,
                 });
-
+    
                 console.log('success', response.data);
-
+    
                 updateIncomeTotal(numericAmount); // Call the function to update income total
-
+                
+                // Update chart data by adding the new source and amount
+                const newSources = [...incomeData.labels, source];
+                const newAmounts = [...incomeData.datasets[0].data, numericAmount];
+                updateChartData(newSources, newAmounts);
+    
                 setAmount('');
                 setSource('');
                 setDate('');
@@ -57,19 +88,7 @@ function Income() {
         }
     };
 
-    ChartJS.register(ArcElement, Tooltip, Legend);
-    const incomedata = {
-        labels : ['Salary', 'Investments', 'Misc'],
-        datasets : [
-            {
-                label : 'Amount',
-                data : [ 5000, 2000, 1000],
-                backgroundColor : ['blue', 'red', 'green'],
-                borderColor : ['blue', 'red', 'green'],
-                borderWidth : 1
-            }
-        ]
-    }
+
 
     return(
         <Flex>
@@ -91,7 +110,7 @@ function Income() {
                                         <Heading size='lg'>${incomeTotal}</Heading>
                                     </VStack>
                                     <Box paddingLeft={10} paddingTop={5} paddingBottom={5} width={700} height={700} >
-                                        <Doughnut data={incomedata} />
+                                        <Doughnut data={incomeData} />
                                     </Box>
                                 </HStack>
                                 <Box width='30vw' paddingLeft={90} paddingBottom={5} paddingTop={5}>

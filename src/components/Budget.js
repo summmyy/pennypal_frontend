@@ -27,6 +27,32 @@ function Budget(){
     const [category, setCategory] = useState('');
     const [timePeriod, setTimePeriod] = useState('');
 
+    ChartJS.register(ArcElement, Tooltip, Legend);
+
+    const [budgetData, setBudgetData] = useState({
+        labels : [],
+        datasets : [
+            {
+                label : 'Amount',
+                data : [ ],
+            }
+        ]
+    })
+
+    const updateChartData = (categories, amounts) => {
+        setBudgetData({
+            labels: categories,
+            datasets: [
+                {
+                    data: amounts,
+                    backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderWidth: 1,
+                },
+            ],
+        });
+    };
+
     const updateIncomeTotal = (numericAmount) => {
         setIncomeTotal(prevIncomeTotal => prevIncomeTotal + numericAmount);
     }
@@ -49,6 +75,11 @@ function Budget(){
 
                 updateIncomeTotal(numericAmount); // Call the function to update income total
 
+                // This is for updating the doughnut chart according to user's entries
+                const newCategories = [...budgetData.labels, category];
+                const newAmounts = [...budgetData.datasets[0].data, numericAmount];
+                updateChartData(newCategories, newAmounts);
+
                 setAmount('');
                 setCategory('');
                 setTimePeriod('');
@@ -60,19 +91,7 @@ function Budget(){
         }
     };
 
-    ChartJS.register(ArcElement, Tooltip, Legend);
-    const budgetdata = {
-        labels : ['Housing', 'Transportation', 'Food & Grocery','Health Care','Debt', 'Entertainment','Tech', 'Savings'],
-        datasets : [
-            {
-                label : 'Amount',
-                data : [ 3000, 900, 300, 200, 500, 100, 500 ,2500],
-                backgroundColor : ['blue', 'red', 'green', 'yellow','pink', 'purple','brown', 'orange'],
-                borderColor : ['blue', 'red', 'green', 'yellow','pink', 'purple','brown' ,'orange'],
-                borderWidth : 1
-            }
-        ]
-    }
+
 
     return(
         <Flex>
@@ -94,7 +113,7 @@ function Budget(){
                                         <Heading size='lg'>${incomeTotal}</Heading>
                                     </VStack>
                                     <Box paddingLeft={10} paddingTop={5} paddingBottom={5} width={700} height={700} >
-                                        <Doughnut data={budgetdata} />
+                                        <Doughnut data={budgetData} />
                                     </Box>
                                 </HStack>
                                 <Box width='30vw' paddingLeft={90} paddingBottom={5} paddingTop={5}>
