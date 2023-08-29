@@ -3,7 +3,6 @@ import { Heading,
         Flex,
         VStack,
         Divider,
-        Text, 
         HStack,
         FormControl,
         FormLabel,
@@ -14,7 +13,7 @@ import { Heading,
 import Nav from "./Nav";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from "react-chartjs-2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 
@@ -23,6 +22,10 @@ function Income() {
     const [amount, setAmount] = useState('');
     const [source, setSource] = useState('');
     const [date, setDate] = useState('');
+
+    const [username, setUsername] = useState(localStorage.getItem('username')) // retrieved this from Login component
+    // const [password, setPassword ] = useState( localStorage.getItem('password'))
+    const [authToken, setAuthToken] = useState( localStorage.getItem('auth_token'))
 
     ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -51,26 +54,34 @@ function Income() {
     };
 
     const updateIncomeTotal = (numericAmount) => {
-        setIncomeTotal(prevIncomeTotal => prevIncomeTotal + numericAmount);
+        setIncomeTotal(prevIncomeTotal => (prevIncomeTotal + numericAmount));
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const numericAmount = parseFloat(amount);
+        const incomeTotals = parseFloat(incomeTotal) + numericAmount
     
         if (!isNaN(numericAmount) && numericAmount !== 0) {
             const url = 'http://127.0.0.1:8000/user/income/';
+            const editUrl = `http://127.0.0.1:8000/user/income/${authToken}/`
     
             try {
                 const response = await axios.post(url, {
                     amount: numericAmount,
                     source: source,
                     date: date,
+                    income_total : incomeTotals
+                },{
+                    headers : {
+                        Authorization : `Token ${authToken}`
+                    }
                 });
     
                 console.log('success', response.data);
+                
     
-                updateIncomeTotal(numericAmount); // Call the function to update income total
+                updateIncomeTotal((numericAmount)); // Call the function to update income total
                 
                 // Update chart data by adding the new source and amount
                 const newSources = [...incomeData.labels, source];
@@ -88,7 +99,43 @@ function Income() {
         }
     };
 
+    // This is supposed to be a get request to show user's previous entries
 
+    // const getIncomeEntries = async () => {
+    //     const url = `http://localhost:8000/user/income/user_entries/?username=${username}`;
+
+    //     try {
+    //         const response = await axios.get(url, {
+    //             headers: {
+    //                 Authorization: `Token ${authToken}`,
+    //             },
+    //         });
+
+    //         console.log('Success:', response.data);
+
+    //         const incomeSources = response.data.map(entry => entry.source);
+    //         const incomeAmounts = response.data.map(entry => entry.amount);
+
+    //         updateChartData(incomeSources, incomeAmounts);
+
+    //         // Get the income total from the latest entry
+    //         if (response.data.length > 0) {
+    //             const latestEntry = response.data[response.data.length - 1];
+    //             setIncomeTotal((latestEntry.income_total));
+    //         } else {
+    //             // If there are no entries, set income total to 0
+    //             setIncomeTotal(0);
+    //         }}
+    //         catch (error) {
+    //         console.error('Error fetching data:', error);
+    //         console.error('Response status:', error.response.status);
+    //         console.error('Response data:', error.response.data);
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     getIncomeEntries();
+    // }, [username, authToken]);
 
     return(
         <Flex>

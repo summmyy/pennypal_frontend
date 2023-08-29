@@ -15,6 +15,7 @@ import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { Link as ChakraLink } from '@chakra-ui/react'
 import { useAuth } from './AuthContext';
 import axios from "axios";
+import { useState } from "react";
 
 
 
@@ -25,13 +26,13 @@ function Nav(){
     const { isOpen: NavOpen, onToggle: NavToggle } = useDisclosure()
     const { isOpen: AvatarOpen, onToggle: AvatarToggle } = useDisclosure()
     const { isLoggedIn, setIsLoggedIn } = useAuth();
-    const { isLoggedOut, setIsLoggedOut } = useAuth();
+
 
 
     const navigate = useNavigate();
-    const username = localStorage.getItem('username') // retrieved this from Login component
-    const password = localStorage.getItem('password')
-    const auth_token = localStorage.getItem('auth_token')
+    const [username, setUsername] = useState(localStorage.getItem('username')) // retrieved this from Login component
+    const [password, setPassword ] = useState( localStorage.getItem('password'))
+    const [authToken, setAuthToken] = useState( localStorage.getItem('auth_token'))
 
     const handleLogout = async (event) => {
         event.preventDefault();
@@ -42,13 +43,18 @@ function Nav(){
                 password : password
         },{
            headers : {
-            Authorization : `Token ${auth_token}`
+            Authorization : `Token ${authToken}`
            }
         })
         
         console.log('success:', response.data)
+
+        navigate('/login')
+
         setIsLoggedIn(false)
-        setIsLoggedOut(false)
+        setUsername('')
+        setPassword('')
+        setAuthToken('')
 
 
         }
@@ -77,28 +83,23 @@ function Nav(){
                          <Heading paddingRight={10}> PennyPal</Heading>
                     </ChakraLink>
                         <WrapItem  >
-                            {isLoggedOut ? (
+                            {isLoggedIn && (
                                 <Avatar 
-                                size='sm' 
+                                size='md' 
                                 onClick={AvatarToggle}
                                 name={username} 
                                 _hover={{ cursor : 'pointer'}}
-                                /> ) : (
-                                    <Avatar
-                                    size='md' 
-                                    onClick={AvatarToggle}
-                                    name={username}
-                                    _hover={{ cursor : 'pointer'}} />
-                                    )}
-                                    {/* <Avatar 
+                                /> )}
+                                {!isLoggedIn && (
+                                    <Avatar 
                                 size='md' 
                                 onClick={AvatarToggle}
-                                name={username}
-                                _hover={{ cursor : 'pointer'}} /> */}
+                                // name={username}
+                                _hover={{ cursor : 'pointer'}} /> )}
                                 <Collapse in={AvatarOpen} animateOpacity>
                                     <Box width="40vw" >
                                         <HStack>
-                                            {isLoggedIn ? (
+                                            {isLoggedIn && (
                                             <Box paddingLeft={10}>
                                                 <ChakraLink as={ReactRouterLink} to='/login' _hover={{ textDecoration: "none" }} >
                                                     <Button 
@@ -107,7 +108,8 @@ function Nav(){
                                                     >Logout</Button>
                                                 </ChakraLink>
                                             </Box>
-                                            ) : (
+                                            )} 
+                                            {!isLoggedIn && (
                                             <>
                                                 <Box paddingLeft={10}>
                                                     <ChakraLink as={ReactRouterLink} to='/login' _hover={{ textDecoration: "none" }}>

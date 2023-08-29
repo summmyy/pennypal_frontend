@@ -13,48 +13,200 @@ import {Box,
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from "react-chartjs-2";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Dashboard(){
 
+    const [incomeTotal, setIncomeTotal] = useState(0);
+    const [expensesTotal, setExpensesTotal] = useState(0);
+    const [budgetTotal, setBudgetTotal] = useState(0);
+
+    const [username, setUsername] = useState(localStorage.getItem('username')) // retrieved this from Login component
+    // const [password, setPassword ] = useState( localStorage.getItem('password'))
+    const [authToken, setAuthToken] = useState( localStorage.getItem('auth_token'))
+
+
     ChartJS.register(ArcElement, Tooltip, Legend);
-    const incomedata = {
-        labels : ['Salary', 'Investments', 'Misc'],
+    const [incomeData, setIncomeData] = useState({
+        labels : [],
         datasets : [
             {
                 label : 'Amount',
-                data : [ 5000, 2000, 1000],
-                backgroundColor : ['blue', 'red', 'green'],
-                borderColor : ['blue', 'red', 'green'],
-                borderWidth : 1
+                data : [ ],
             }
         ]
-    }
+    })
 
-    const expensesdata = {
-        labels : ['Housing', 'Transportation', 'Food & Grocery','Health Care','Debt', 'Entertainment','Tech','Savings'],
-        datasets : [
-            {
-                label : 'Amount',
-                data : [ 3500, 900, 600, 200, 500, 300,500, 1500],
-                backgroundColor : ['blue', 'red', 'green', 'yellow','pink', 'purple','brown', 'orange'],
-                borderColor : ['blue', 'red', 'green', 'yellow','pink', 'purple','brown', 'orange'],
-                borderWidth : 1
-            }
-        ]
-    }
+    const updateIncomeData = (sources, amounts) => {
+        setIncomeData({
+            labels: sources,
+            datasets: [
+                {
+                    data: amounts,
+                    backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderWidth: 1,
+                },
+            ],
+        });
+    };
 
-    const budgetdata = {
-        labels : ['Housing', 'Transportation', 'Food & Grocery','Health Care','Debt', 'Entertainment','Tech', 'Savings'],
+    const [expensesData, setExpensesData] = useState({
+        labels : [],
         datasets : [
             {
                 label : 'Amount',
-                data : [ 3000, 900, 300, 200, 500, 100, 500 ,2500],
-                backgroundColor : ['blue', 'red', 'green', 'yellow','pink', 'purple','brown', 'orange'],
-                borderColor : ['blue', 'red', 'green', 'yellow','pink', 'purple','brown' ,'orange'],
-                borderWidth : 1
+                data : [ ],
             }
         ]
-    }
+    })
+
+    const updateExpensesData = (categories, amounts) => {
+        setExpensesData({
+            labels: categories,
+            datasets: [
+                {
+                    data: amounts,
+                    backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderWidth: 1,
+                },
+            ],
+        });
+    };
+
+    const [budgetData, setBudgetData] = useState({
+        labels : [],
+        datasets : [
+            {
+                label : 'Amount',
+                data : [ ],
+            }
+        ]
+    })
+
+    const updateBudgetData = (categories, amounts) => {
+        setBudgetData({
+            labels: categories,
+            datasets: [
+                {
+                    data: amounts,
+                    backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
+                    borderWidth: 1,
+                },
+            ],
+        });
+    };
+
+    const getIncomeEntries = async () => {
+        const url = `http://localhost:8000/user/income/user_entries/?username=${username}`;
+
+        try {
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+
+            console.log('Success:', response.data);
+
+            const incomeSources = response.data.map(entry => entry.source);
+            const incomeAmounts = response.data.map(entry => entry.amount);
+
+            updateIncomeData(incomeSources, incomeAmounts);
+
+            // Get the income total from the latest entry
+            if (response.data.length > 0) {
+                const latestEntry = response.data[response.data.length - 1];
+                setIncomeTotal((latestEntry.income_total));
+            } else {
+                // If there are no entries, set income total to 0
+                setIncomeTotal(0);
+            }}
+            catch (error) {
+            console.error('Error fetching data:', error);
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
+
+    const getExpensesEntries = async () => {
+        const url = `http://localhost:8000/user/transactions/user_entries/?username=${username}`;
+
+        try {
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+
+            console.log('Success:', response.data);
+
+            const expenseCategory = response.data.map(entry => entry.category);
+            const expenseAmounts = response.data.map(entry => entry.amount);
+
+            updateExpensesData(expenseCategory, expenseAmounts);
+
+            // Get the income total from the latest entry
+            if (response.data.length > 0) {
+                const latestEntry = response.data[response.data.length - 1];
+                setExpensesTotal((latestEntry.transaction_total));
+            } else {
+                // If there are no entries, set income total to 0
+                setExpensesTotal(0);
+            }}
+            catch (error) {
+            console.error('Error fetching data:', error);
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
+
+    const getBudgetEntries = async () => {
+        const url = `http://localhost:8000/user/budget/user_entries/?username=${username}`;
+
+        try {
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+
+            console.log('Success:', response.data);
+
+            const budgetCategory = response.data.map(entry => entry.category);
+            const budgetAmount = response.data.map(entry => entry.allocated_amount);
+
+            updateBudgetData(budgetCategory, budgetAmount);
+
+            // Get the income total from the latest entry
+            if (response.data.length > 0) {
+                const latestEntry = response.data[response.data.length - 1];
+                setBudgetTotal((latestEntry.budget_total));
+            } else {
+                // If there are no entries, set income total to 0
+                setBudgetTotal(0);
+            }}
+            catch (error) {
+            console.error('Error fetching data:', error);
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
+
+    useEffect(() => {
+        getIncomeEntries();
+    }, [username, authToken]);
+
+    useEffect(() => {
+        getExpensesEntries();
+    }, [username, authToken]);
+
+    useEffect(() => {
+        getBudgetEntries();
+    }, [username, authToken]);
 
     return(
         <Flex>
@@ -65,7 +217,7 @@ function Dashboard(){
                     <Box paddingTop={3.5} width='80vw' >
                         <Divider  borderWidth='1px'  borderColor='black' />
                     </Box>
-                    <Text paddingBottom={50}> Your Finances </Text>
+                    <Text paddingBottom={50}> {username} Finances </Text>
                     </VStack>
                     <Box padding={5}>
                         <Box bgColor='#D9D9D9' paddingLeft={100} paddingRight={100} borderRadius={10} paddingTop={50} paddingBottom={50} >
@@ -74,10 +226,10 @@ function Dashboard(){
                                 <HStack>
                                     <VStack paddingLeft={100}>
                                         <Heading size='lg'>Income: </Heading>
-                                        <Heading size='lg'>$8000</Heading>
+                                        <Heading size='lg'>${incomeTotal}</Heading>
                                     </VStack>
                                     <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
-                                        <Doughnut data={incomedata} />
+                                        <Doughnut data={incomeData} />
                                     </Box>
                                 </HStack>
                                 
@@ -87,10 +239,10 @@ function Dashboard(){
                                 <HStack>
                                     <VStack paddingLeft={90}>
                                         <Heading size='lg'>Expenses: </Heading>
-                                        <Heading size='lg'>$6000</Heading>
+                                        <Heading size='lg'>${expensesTotal}</Heading>
                                     </VStack>
                                     <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
-                                        <Doughnut data={expensesdata} />
+                                        <Doughnut data={expensesData} />
                                     </Box>
                                 </HStack>
                                 
@@ -100,10 +252,10 @@ function Dashboard(){
                                 <HStack>
                                     <VStack paddingLeft={100}>
                                         <Heading size='lg'>Budget: </Heading>
-                                        <Heading size='lg'>$5000</Heading>
+                                        <Heading size='lg'>${budgetTotal}</Heading>
                                     </VStack>
                                     <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
-                                        <Doughnut data={budgetdata} />
+                                        <Doughnut data={budgetData} />
                                     </Box>
                                 </HStack>
                                 

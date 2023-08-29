@@ -25,6 +25,10 @@ function Expenses(){
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
 
+    const [username, setUsername] = useState(localStorage.getItem('username')) // retrieved this from Login component
+    // const [password, setPassword ] = useState( localStorage.getItem('password'))
+    const [authToken, setAuthToken] = useState( localStorage.getItem('auth_token'))
+
     ChartJS.register(ArcElement, Tooltip, Legend);
 
     const [expensesData, setExpensesData] = useState({
@@ -58,6 +62,7 @@ function Expenses(){
     const handleSubmit = async (event) => {
         event.preventDefault();
         const numericAmount = parseFloat(amount);
+        const incomeTotals = parseFloat(incomeTotal) + numericAmount
 
         if (!isNaN(numericAmount) && numericAmount !== 0) {
             const url = 'http://127.0.0.1:8000/user/transactions/';
@@ -67,7 +72,12 @@ function Expenses(){
                     amount: numericAmount,
                     date: date,
                     category: category,
-                    description : description
+                    description : description,
+                    transaction_total : incomeTotals
+                },{
+                    headers : {
+                        Authorization : `Token ${authToken}`
+                    }
                 });
 
                 console.log('success', response.data);

@@ -40,6 +40,7 @@ function Login(){
             const authToken = response.data.auth_token;
 
             navigate('/')
+            window.location.reload()
 
             // use this to store the value of username so it can be accessed in other parts of the app
             localStorage.setItem('username', username);

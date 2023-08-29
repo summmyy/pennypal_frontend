@@ -27,6 +27,10 @@ function Budget(){
     const [category, setCategory] = useState('');
     const [timePeriod, setTimePeriod] = useState('');
 
+    const [username, setUsername] = useState(localStorage.getItem('username')) // retrieved this from Login component
+    // const [password, setPassword ] = useState( localStorage.getItem('password'))
+    const [authToken, setAuthToken] = useState( localStorage.getItem('auth_token'))
+
     ChartJS.register(ArcElement, Tooltip, Legend);
 
     const [budgetData, setBudgetData] = useState({
@@ -60,6 +64,7 @@ function Budget(){
     const handleSubmit = async (event) => {
         event.preventDefault();
         const numericAmount = parseFloat(amount);
+        const incomeTotals = parseFloat(incomeTotal) + numericAmount
 
         if (!isNaN(numericAmount) && numericAmount !== 0) {
             const url = 'http://127.0.0.1:8000/user/budget/';
@@ -69,6 +74,11 @@ function Budget(){
                     allocated_amount: numericAmount,
                     category: category,
                     time_period: timePeriod,
+                    budget_total : incomeTotals
+                },{
+                    headers : {
+                        Authorization : `Token ${authToken}`
+                    }
                 });
 
                 console.log('success', response.data);
