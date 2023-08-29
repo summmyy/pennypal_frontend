@@ -13,7 +13,7 @@ import { Heading,
 import Nav from "./Nav";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from "react-chartjs-2";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 
@@ -64,7 +64,6 @@ function Income() {
     
         if (!isNaN(numericAmount) && numericAmount !== 0) {
             const url = 'http://127.0.0.1:8000/user/income/';
-            const editUrl = `http://127.0.0.1:8000/user/income/${authToken}/`
     
             try {
                 const response = await axios.post(url, {
@@ -99,7 +98,38 @@ function Income() {
         }
     };
 
-    // This is supposed to be a get request to show user's previous entries
+    const handleDeleteLastEntry = async () => {
+        try {
+            const deleteUrl = `http://127.0.0.1:8000/user/income/delete_last_entry/?username=${username}`;
+    
+            const response = await axios.delete(deleteUrl, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+            console.log('last entry deleted:', response.data )
+
+            const newSources = [...incomeData.labels];
+            const newAmounts = [...incomeData.datasets[0].data];
+
+            if (newSources.length > 0) {
+                newSources.pop(); // Remove the last source
+                const deletedAmount = newAmounts.pop(); // Remove the last amount
+
+            setIncomeTotal(prevIncomeTotal => prevIncomeTotal - deletedAmount);
+        
+            updateChartData(newSources, newAmounts);
+    }
+
+        } catch (error) {
+            console.error('Error deleting entry:', error);
+            console.error('Response Status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
+
+
+    // * This is supposed to be a get request to show user's previous entries *
 
     // const getIncomeEntries = async () => {
     //     const url = `http://localhost:8000/user/income/user_entries/?username=${username}`;
@@ -191,10 +221,15 @@ function Income() {
                                             />
                                         </FormControl>
                                         <br />
+                                        <HStack>
                                         <Button
                                         type="submit"
                                         > Submit </Button>
-                                    </form>
+                                        <Button onClick={handleDeleteLastEntry}>
+                                        Delete Last Entry    
+                                        </Button>    
+                                        </HStack>
+                                    </form> 
                                 </Box>
                                 
                             </Box>

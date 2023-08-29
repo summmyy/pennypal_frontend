@@ -100,6 +100,36 @@ function Expenses(){
             }
         }
     };
+
+    const handleDeleteLastEntry = async () => {
+        try {
+            const deleteUrl = `http://127.0.0.1:8000/user/transactions/delete_last_entry/?username=${username}`;
+    
+            const response = await axios.delete(deleteUrl, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+            console.log('last entry deleted:', response.data )
+
+            const newSources = [...expensesData.labels];
+            const newAmounts = [...expensesData.datasets[0].data];
+
+            if (newSources.length > 0) {
+                newSources.pop(); // Remove the last source
+                const deletedAmount = newAmounts.pop(); // Remove the last amount
+
+            setIncomeTotal(prevIncomeTotal => prevIncomeTotal - deletedAmount);
+        
+            updateChartData(newSources, newAmounts);
+    }
+
+        } catch (error) {
+            console.error('Error deleting entry:', error);
+            console.error('Response Status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
     
     return(
         <Flex>
@@ -161,9 +191,14 @@ function Expenses(){
                                             />
                                         </FormControl>
                                         <br />
+                                        <HStack>
                                         <Button
                                         type="submit"
                                         > Submit </Button>
+                                        <Button onClick={handleDeleteLastEntry}>
+                                        Delete Last Entry    
+                                        </Button>    
+                                        </HStack>
                                     </form>
                                 </Box>
                                 

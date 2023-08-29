@@ -40,7 +40,7 @@ function SignUp(){
 
             console.log('success', response.data);
 
-            navigate('/login')
+            navigate('/')
 
             setEmail('')
             setUsername('')

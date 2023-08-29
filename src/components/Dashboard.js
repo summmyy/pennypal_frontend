@@ -8,7 +8,8 @@ import {Box,
         Divider,
         Avatar,
         WrapItem,
-        SimpleGrid
+        SimpleGrid,
+        Button
     } from '@chakra-ui/react'
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -208,6 +209,69 @@ function Dashboard(){
         getBudgetEntries();
     }, [username, authToken]);
 
+    const handleDeleteIncomeEntries = async () => {
+        const deleteUrl = `http://localhost:8000/user/income/user_entries/?username=${username}`;
+    
+        try {
+            const response = await axios.delete(deleteUrl, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+
+            console.log('success :' , response.data)
+    
+            // Refresh the data after deletion
+            getIncomeEntries();
+        } catch (error) {
+            console.error('Error deleting entries:', error);
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
+
+    const handleDeleteExpensesEntries = async () => {
+        const deleteUrl = `http://localhost:8000/user/transactions/user_entries/?username=${username}`;
+    
+        try {
+            const response = await axios.delete(deleteUrl, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+
+            console.log('success :' , response.data)
+    
+            // Refresh the data after deletion
+            getExpensesEntries();
+        } catch (error) {
+            console.error('Error deleting entries:', error);
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
+
+    const handleDeleteBudgetEntries = async () => {
+        const deleteUrl = `http://localhost:8000/user/budget/user_entries/?username=${username}`;
+    
+        try {
+            const response = await axios.delete(deleteUrl, {
+                headers: {
+                    Authorization: `Token ${authToken}`,
+                },
+            });
+
+            console.log('success :' , response.data)
+    
+            // Refresh the data after deletion
+            getBudgetEntries();
+        } catch (error) {
+            console.error('Error deleting entries:', error);
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+    };
+
     return(
         <Flex>
             <Nav />
@@ -217,7 +281,7 @@ function Dashboard(){
                     <Box paddingTop={3.5} width='80vw' >
                         <Divider  borderWidth='1px'  borderColor='black' />
                     </Box>
-                    <Text paddingBottom={50}> {username} Finances </Text>
+                    <Text as='b' paddingBottom={50}> {username} Finances </Text>
                     </VStack>
                     <Box padding={5}>
                         <Box bgColor='#D9D9D9' paddingLeft={100} paddingRight={100} borderRadius={10} paddingTop={50} paddingBottom={50} >
@@ -227,6 +291,9 @@ function Dashboard(){
                                     <VStack paddingLeft={100}>
                                         <Heading size='lg'>Income: </Heading>
                                         <Heading size='lg'>${incomeTotal}</Heading>
+                                        <Box paddingTop={70}>
+                                             <Button onClick={handleDeleteIncomeEntries}> Reset Income </Button>
+                                        </Box>
                                     </VStack>
                                     <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
                                         <Doughnut data={incomeData} />
@@ -240,6 +307,9 @@ function Dashboard(){
                                     <VStack paddingLeft={90}>
                                         <Heading size='lg'>Expenses: </Heading>
                                         <Heading size='lg'>${expensesTotal}</Heading>
+                                        <Box paddingTop={70}>
+                                             <Button onClick={handleDeleteExpensesEntries}> Reset Income </Button>
+                                        </Box>
                                     </VStack>
                                     <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
                                         <Doughnut data={expensesData} />
@@ -253,6 +323,9 @@ function Dashboard(){
                                     <VStack paddingLeft={100}>
                                         <Heading size='lg'>Budget: </Heading>
                                         <Heading size='lg'>${budgetTotal}</Heading>
+                                        <Box paddingTop={70}>
+                                             <Button onClick={handleDeleteBudgetEntries}> Reset Income </Button>
+                                        </Box>
                                     </VStack>
                                     <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
                                         <Doughnut data={budgetData} />

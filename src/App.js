@@ -15,13 +15,13 @@ function App() {
     <ChakraProvider>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/nav" element={<Nav />} />
           <Route path="/income" element={<Income />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/budget" element={<Budget />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
         </Routes>
       </AuthProvider>
     </ChakraProvider>

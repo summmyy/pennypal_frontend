@@ -49,7 +49,7 @@ function Nav(){
         
         console.log('success:', response.data)
 
-        navigate('/login')
+        navigate('/')
 
         setIsLoggedIn(false)
         setUsername('')
@@ -79,8 +79,8 @@ function Nav(){
                         icon={ <HamburgerIcon />}
                      />
                      </Box>
-                     <ChakraLink as={ReactRouterLink} to='/' _hover={{ textDecoration: "none" }} >
-                         <Heading paddingRight={10}> PennyPal</Heading>
+                     <ChakraLink as={ReactRouterLink} to='/dashboard' _hover={{ textDecoration: "none" }} >
+                         <Heading paddingRight={10}> PennyPal </Heading>
                     </ChakraLink>
                         <WrapItem  >
                             {isLoggedIn && (
@@ -101,7 +101,7 @@ function Nav(){
                                         <HStack>
                                             {isLoggedIn && (
                                             <Box paddingLeft={10}>
-                                                <ChakraLink as={ReactRouterLink} to='/login' _hover={{ textDecoration: "none" }} >
+                                                <ChakraLink as={ReactRouterLink} to='/' _hover={{ textDecoration: "none" }} >
                                                     <Button 
                                                     bgColor='#D9D9D9'
                                                     onClick={handleLogout} 
@@ -112,7 +112,7 @@ function Nav(){
                                             {!isLoggedIn && (
                                             <>
                                                 <Box paddingLeft={10}>
-                                                    <ChakraLink as={ReactRouterLink} to='/login' _hover={{ textDecoration: "none" }}>
+                                                    <ChakraLink as={ReactRouterLink} to='/' _hover={{ textDecoration: "none" }}>
                                                         <Button 
                                                         bgColor='#D9D9D9' 
                                                         >Login</Button>
@@ -139,7 +139,7 @@ function Nav(){
                         <Box paddingBottom={5}>
                             <Button width='20vw'padding={6} borderRadius={0} onClick={(event) => {
                                 event.preventDefault()
-                                navigate('/')
+                                navigate('/dashboard')
                                 } } >
                                 <ChakraLink as={ReactRouterLink} to='/' _hover={{ textDecoration: "none" }}>
                                     <Text>Dashboard</Text>
