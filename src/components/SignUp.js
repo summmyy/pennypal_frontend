@@ -68,9 +68,9 @@ function SignUp(){
 
     return(
         <>
-            <Box paddingTop={200}>
+            <Box paddingTop={{base : 150 ,xl : 200,'2xl' :200}}>
                 <Center>
-                    <Box bgColor='#89CFF0' width='30vw' paddingBottom={20} paddingTop={10} borderRadius={8}>
+                    <Box bgColor='#89CFF0' width={{base : '80vw',xl : '30vw','2xl':'30vw'}} paddingBottom={20} paddingTop={10} borderRadius={8}>
                         <VStack>
                             <Heading> Sign Up </Heading>
                             <br/>
@@ -106,7 +106,7 @@ function SignUp(){
                                 </form>
                                 <HStack>
                                     <Text> Already have an account? </Text>
-                                    <ChakraLink as={ReactRouterLink} to='/login'>
+                                    <ChakraLink as={ReactRouterLink} to='/'>
                                         <Text>  Login</Text>
                                     </ChakraLink>
                                 </HStack>

@@ -11,6 +11,8 @@ import { Heading,
     Button,
     Textarea,
     Select,
+    SimpleGrid,
+    Center,
      } from "@chakra-ui/react";
 import Nav from "./Nav";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -141,29 +143,54 @@ function Budget(){
       };
 
     return(
-        <Flex>
+        <Flex flexDirection={{base :'column',xl : 'row', '2xl' : 'row'}} >
             <Nav />
             <Box flex='1'>
+            <SimpleGrid columns={{ base: 1}} spacing={4}>
             <VStack>
                     <Heading paddingTop={3}> Expenses </Heading>
-                    <Box paddingTop={3.5} width='80vw' >
+                    <Box paddingTop={{base:2 ,xl : 0,'2xl':3.5}} width={{base:'100vw',xl : '73vw','2xl':'79.25vw'}} >
                         <Divider  borderWidth='1px'  borderColor='black' />
                     </Box>
                     </VStack>
-                    <Box padding={5}>
-                        <Box bgColor='#D9D9D9' paddingLeft={100} paddingRight={100} borderRadius={10} paddingTop={50} paddingBottom={50} >
+                    <Box padding={{base: 2,xl : 5,'2xl' : 5}}>
+                        <Center>
+                        <Box 
+                            bgColor='#D9D9D9' 
+                            paddingLeft={{base:1,'2xl':100}} 
+                            paddingRight={{base:1,'2xl':100}}
+                            borderRadius={10} 
+                            paddingTop={50} 
+                            paddingBottom={50}
+                            width={{base : '100vw',xl : '70vw','2xl':'79vw'}} >
                         <br />
-                            <Box borderRadius={10} bgColor='#89CFF0' paddingLeft={100} paddingRight={100} >
+                            <Box 
+                                borderRadius={10} 
+                                bgColor='#89CFF0' 
+                                paddingLeft={{base:1,'2xl':100}} 
+                                paddingRight={{base:1,'2xl':100}} 
+                                padding={2} >
                                 <HStack>
-                                    <VStack paddingLeft={200}>
-                                        <Heading size='lg'>Budget: </Heading>
-                                        <Heading size='lg'>${incomeTotal}</Heading>
+                                    <VStack paddingLeft={{base:1,xl : 150,'2xl':200}}>
+                                        <Heading size={{base : 'sm',xl : 'md','2xl':'lg'}}>Budget: </Heading>
+                                        <Heading size={{base : 'sm',xl : 'md','2xl':'lg'}}>${incomeTotal}</Heading>
                                     </VStack>
-                                    <Box paddingLeft={10} paddingTop={5} paddingBottom={5} width={700} height={700} >
-                                        <Doughnut data={budgetData} />
+                                    <Box 
+                                        paddingLeft={10} 
+                                        paddingTop={5} 
+                                        paddingBottom={5} 
+                                        width={{base : '50vw','2xl':700}} 
+                                        height={{base: '40vh','2xl':700}} >
+                                        <Doughnut 
+                                            data={budgetData}
+                                            options={{
+                                                responsive: true,
+                                                maintainAspectRatio: false,
+                                              }}
+                                            />
                                     </Box>
                                 </HStack>
-                                <Box width='30vw' paddingLeft={90} paddingBottom={5} paddingTop={5}>
+                                <Box width={{base : '100vw','2xl':'30vw'}} paddingLeft={90} paddingBottom={5} paddingTop={5}>
                                     <form onSubmit={handleSubmit}>
                                         <FormControl>
                                             <FormLabel>Amount: </FormLabel>
@@ -198,8 +225,14 @@ function Budget(){
                                         <HStack>
                                         <Button
                                         type="submit"
+                                        size={{base : 'sm',xl : 'md','2xl':'lg'}}
+                                        width='auto'
                                         > Submit </Button>
-                                        <Button onClick={handleDeleteLastEntry}>
+                                        <Button 
+                                        onClick={handleDeleteLastEntry}
+                                        size={{base : 'sm',xl : 'md','2xl':'lg'}}
+                                        width='auto'
+                                        >
                                         Delete Last Entry    
                                         </Button>    
                                         </HStack>
@@ -208,7 +241,9 @@ function Budget(){
                                 
                             </Box>
                         </Box>
+                      </Center>
                     </Box>
+                </SimpleGrid>
             </Box>
         </Flex>
     )

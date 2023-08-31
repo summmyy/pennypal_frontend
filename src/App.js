@@ -1,4 +1,4 @@
-import {ChakraProvider} from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import Nav from './components/Nav';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/AuthContext';
@@ -11,8 +11,16 @@ import Login from './components/Login';
 
 
 function App() {
+
+  const customTheme = extendTheme({
+    fonts: {
+      heading: "Roboto Serif, serif",
+      body: "Roboto Serif, serif",
+    },
+  });
+
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <AuthProvider>
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />

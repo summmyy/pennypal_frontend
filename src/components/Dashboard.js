@@ -9,7 +9,9 @@ import {Box,
         Avatar,
         WrapItem,
         SimpleGrid,
-        Button
+        Button,
+        Container,
+        Center
     } from '@chakra-ui/react'
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -48,6 +50,7 @@ function Dashboard(){
                     backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
                     borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
                     borderWidth: 1,
+                    label: 'Amount'
                 },
             ],
         });
@@ -72,6 +75,7 @@ function Dashboard(){
                     backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
                     borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
                     borderWidth: 1,
+                    label: 'Amount'
                 },
             ],
         });
@@ -96,6 +100,7 @@ function Dashboard(){
                     backgroundColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
                     borderColor: ['blue', 'red', 'green','purple', 'yellow', 'pink'],
                     borderWidth: 1,
+                    label: 'Amount'
                 },
             ],
         });
@@ -282,69 +287,128 @@ function Dashboard(){
       };
 
     return(
-        <Flex>
+        <Flex flexDirection={{base :'column',xl : 'row', '2xl' : 'row'}} >
             <Nav />
-            <Box flex='1'>
+            <Box flex='1'  >
+            <SimpleGrid columns={{ base: 1}} spacing={4} >
                 <VStack>
                     <Heading paddingTop={3}> Dashboard </Heading>
-                    <Box paddingTop={3.5} width='80vw' >
+                    <Box paddingTop={{base:2 ,xl : 0,'2xl':3.5}} width={{base:'100vw',xl : '73vw','2xl':'79.25vw'}} >
                         <Divider  borderWidth='1px'  borderColor='black' />
                     </Box>
                     <Text as='b' paddingBottom={50}> {username} Finances </Text>
                     </VStack>
-                    <Box padding={5}>
-                        <Box bgColor='#D9D9D9' paddingLeft={100} paddingRight={100} borderRadius={10} paddingTop={50} paddingBottom={50} >
+                    <Box padding={{base: 2,xl : 5,'2xl' : 5}} >
+                        <Center>
+                        <Box 
+                            bgColor='#D9D9D9' 
+                            paddingLeft={{base:1,'2xl':100}} 
+                            paddingRight={{base:1,'2xl':100}} 
+                            borderRadius={10} 
+                            paddingTop={50} 
+                            paddingBottom={50} 
+                            width={{base : '100vw',xl : '70vw','2xl':'79vw'}}
+                            >
                         <br />
-                            <Box borderRadius={10} bgColor='#89CFF0' paddingLeft={100} paddingRight={100} >
+                            <Box 
+                                borderRadius={10} 
+                                bgColor='#89CFF0' 
+                                paddingLeft={{base:1,'2xl':100}} 
+                                paddingRight={{base:1,'2xl':100}} 
+                                padding={2} >
                                 <HStack>
-                                    <VStack paddingLeft={100}>
-                                        <Heading size='lg'>Income: </Heading>
-                                        <Heading size='lg'>${incomeTotal}</Heading>
+                                    <VStack paddingLeft={{base:1,xl : 100,'2xl':100}}>
+                                        <Heading size={{base : 'sm',xl : 'md','2xl':'lg'}}>Income: </Heading>
+                                        <Heading size={{base : 'sm',xl: 'md','2xl':'lg'}}>${incomeTotal}</Heading>
                                         <Box paddingTop={70}>
-                                             <Button onClick={handleDeleteIncomeEntries}> Reset Income </Button>
+                                             <Button onClick={handleDeleteIncomeEntries} size={{base : 'sm',xl : 'md','2xl':'lg'}}> Reset Income </Button>
                                         </Box>
                                     </VStack>
-                                    <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
-                                        <Doughnut data={incomeData} />
+                                    <Box 
+                                        paddingLeft={{base:1,xl : 200,'2xl':500}} 
+                                        paddingTop={5} 
+                                        paddingBottom={5}  
+                                        width={{base : '50vw',xl : '70vw','2xl':'80vw'}}  
+                                        height={{base : '40vh',xl : '40vh','2xl':'40vh'}}   >
+                                        <Doughnut 
+                                            data={incomeData}
+                                            options={{
+                                                responsive: true,
+                                                maintainAspectRatio: false,
+                                              }}
+                                            />
                                     </Box>
                                 </HStack>
                                 
                             </Box>
                             <br />
-                            <Box borderRadius={10} bgColor='#89CFF0' paddingLeft={100} paddingRight={100} >
+                            <Box 
+                                borderRadius={10} 
+                                bgColor='#89CFF0' 
+                                paddingLeft={{base:1,'2xl':100}} 
+                                paddingRight={{base:1,'2xl':100}} 
+                                padding={2} >
                                 <HStack>
-                                    <VStack paddingLeft={90}>
-                                        <Heading size='lg'>Expenses: </Heading>
-                                        <Heading size='lg'>${expensesTotal}</Heading>
+                                    <VStack paddingLeft={{base:1,xl : 100,'2xl':100}}>
+                                        <Heading size={{base : 'sm',xl : 'md','2xl':'lg'}}>Expenses: </Heading>
+                                        <Heading size={{base : 'sm',xl : 'md','2xl':'lg'}}>${expensesTotal}</Heading>
                                         <Box paddingTop={70}>
-                                             <Button onClick={handleDeleteExpensesEntries}> Reset Income </Button>
+                                             <Button onClick={handleDeleteExpensesEntries} size={{base : 'sm',xl : 'md','2xl':'lg'}}> Reset Income </Button>
                                         </Box>
                                     </VStack>
-                                    <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
-                                        <Doughnut data={expensesData} />
+                                    <Box 
+                                        paddingLeft={{base:1,xl : 200,'2xl':500}} 
+                                        paddingTop={5} paddingBottom={5} 
+                                        width={{base : '50vw',xl : '70vw','2xl':'80vw'}}  
+                                        height={{base : '40vh',xl : '40vh','2xl':'40vh'}} >
+                                        <Doughnut 
+                                            data={expensesData}
+                                            options={{
+                                                responsive: true,
+                                                maintainAspectRatio: false,
+                                              }}
+                                            />
                                     </Box>
                                 </HStack>
                                 
                             </Box>
                             <br />
-                            <Box borderRadius={10} bgColor='#89CFF0' paddingLeft={100} paddingRight={100} >
+                            <Box 
+                                borderRadius={10} 
+                                bgColor='#89CFF0' 
+                                paddingLeft={{base:1,'2xl':100}} 
+                                paddingRight={{base:1,'2xl':100}} 
+                                padding={2} >
                                 <HStack>
-                                    <VStack paddingLeft={100}>
-                                        <Heading size='lg'>Budget: </Heading>
-                                        <Heading size='lg'>${budgetTotal}</Heading>
+                                    <VStack paddingLeft={{base:1,xl : 100,'2xl':100}}>
+                                        <Heading size={{base : 'sm',xl : 'md','2xl':'lg'}}>Budget: </Heading>
+                                        <Heading size={{base : 'sm',xl : 'md','2xl':'lg'}}>${budgetTotal}</Heading>
                                         <Box paddingTop={70}>
-                                             <Button onClick={handleDeleteBudgetEntries}> Reset Income </Button>
+                                             <Button onClick={handleDeleteBudgetEntries} size={{base : 'sm',xl : 'md','2xl':'lg'}} > Reset Income </Button>
                                         </Box>
                                     </VStack>
-                                    <Box paddingLeft={500} paddingTop={5} paddingBottom={5} >
-                                        <Doughnut data={budgetData} />
+                                    <Box 
+                                        paddingLeft={{base:1,xl : 200,'2xl':500}} 
+                                        paddingTop={5} 
+                                        paddingBottom={5} 
+                                        width={{base : '50vw',xl : '70vw','2xl':'80vw'}}  
+                                        height={{base : '40vh',xl : '40vh','2xl':'40vh'}} >
+                                        <Doughnut 
+                                            data={budgetData}
+                                            options={{
+                                                responsive: true,
+                                                maintainAspectRatio: false,
+                                              }}
+                                            />
                                     </Box>
                                 </HStack>
                                 
                             </Box>
                          <br />
                         </Box>
+                        </Center>
                     </Box>
+                </SimpleGrid>
             </Box>
         </Flex>
     )

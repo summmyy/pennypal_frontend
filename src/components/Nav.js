@@ -73,10 +73,11 @@ function Nav(){
         xl: "80em", // ~1280px
         "2xl": "96em", // ~1536px
       };
+      
 
     return(
         <Box>
-        <Box width="20vw" bgColor='#89CFF0' height='8vh'>
+        <Box width={{base : '100vw',xl : '27vw','2xl':'20vw'}} bgColor='#89CFF0' height='8vh'>
                 <HStack paddingTop={3} paddingBottom={10} paddingLeft={5}>
                     <Box paddingRight={10}>
                     <IconButton
@@ -104,8 +105,8 @@ function Nav(){
                                 onClick={AvatarToggle}
                                 // name={username}
                                 _hover={{ cursor : 'pointer'}} /> )}
-                                <Collapse in={AvatarOpen} animateOpacity>
-                                    <Box width="40vw" >
+                                <Collapse in={AvatarOpen} animateOpacity >
+                                    <Box width="40vw" height='5vh' >
                                         <HStack>
                                             {isLoggedIn && (
                                             <Box paddingLeft={10}>
@@ -142,10 +143,10 @@ function Nav(){
                 </HStack>
         </Box>
                 <Collapse in={NavOpen} animateOpacity>
-                <Box  width="20vw" bgColor='#89CFF0' height='140vh'>
+                <Box  width={{base : '100vw',xl : '27vw','2xl':'20vw'}} bgColor='#89CFF0' height='140vh'>
                     <VStack>
                         <Box paddingBottom={5}>
-                            <Button width='20vw'padding={6} borderRadius={0} onClick={(event) => {
+                            <Button width={{base : '100vw',xl : '27vw','2xl':'20vw'}} padding={6} borderRadius={0} onClick={(event) => {
                                 event.preventDefault()
                                 navigate('/dashboard')
                                 } } >
@@ -155,7 +156,7 @@ function Nav(){
                             </Button>
                         </Box>
                         <Box paddingBottom={5} >
-                            <Button width='20vw'padding={6} borderRadius={0} onClick={(event) => {
+                            <Button width={{base : '100vw',xl : '27vw','2xl':'20vw'}} padding={6} borderRadius={0} onClick={(event) => {
                                 event.preventDefault()
                                 navigate('/income')
                                 } } >
@@ -165,7 +166,7 @@ function Nav(){
                             </Button>
                         </Box>
                         <Box paddingBottom={5}>
-                            <Button width='20vw'padding={6} borderRadius={0} onClick={(event) => {
+                            <Button width={{base : '100vw',xl : '27vw','2xl':'20vw'}} padding={6} borderRadius={0} onClick={(event) => {
                                 event.preventDefault()
                                 navigate('/expenses')
                                 } }>
@@ -175,7 +176,7 @@ function Nav(){
                             </Button>
                         </Box>
                         <Box paddingBottom={5}>
-                            <Button width='20vw'padding={6} borderRadius={0} onClick={(event) => {
+                            <Button width={{base : '100vw',xl : '27vw','2xl':'20vw'}} padding={6} borderRadius={0} onClick={(event) => {
                                 event.preventDefault()
                                 navigate('/budget')
                                 } } >
