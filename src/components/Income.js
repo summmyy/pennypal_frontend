@@ -25,8 +25,11 @@ function Income() {
     const [source, setSource] = useState('');
     const [date, setDate] = useState('');
 
-    const [username, setUsername] = useState(localStorage.getItem('username')) // retrieved this from Login component
-    // const [password, setPassword ] = useState( localStorage.getItem('password'))
+    // eslint-disable-next-line 
+    const [username, setUsername] = useState(localStorage.getItem('username'))
+    // eslint-disable-next-line 
+    const [password, setPassword ] = useState( localStorage.getItem('password'))
+    // eslint-disable-next-line 
     const [authToken, setAuthToken] = useState( localStorage.getItem('auth_token'))
 
     ChartJS.register(ArcElement, Tooltip, Legend);
@@ -169,6 +172,7 @@ function Income() {
     //     getIncomeEntries();
     // }, [username, authToken]);
 
+    // eslint-disable-next-line 
     const breakpoints = {
         base: "0em", // 0px
         sm: "30em", // ~480px. em is a relative unit and is dependant on the font size.

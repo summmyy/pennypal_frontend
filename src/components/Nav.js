@@ -65,6 +65,7 @@ function Nav(){
         }
     }
 
+    // eslint-disable-next-line 
     const breakpoints = {
         base: "0em", // 0px
         sm: "30em", // ~480px. em is a relative unit and is dependant on the font size.
