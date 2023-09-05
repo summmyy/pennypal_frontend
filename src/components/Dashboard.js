@@ -107,7 +107,7 @@ function Dashboard(){
     };
 
     const getIncomeEntries = async () => {
-        const url = `http://localhost:8000/user/income/user_entries/?username=${username}`;
+        const url = `https://pennypal.up.railway.app/user/income/user_entries/?username=${username}`;
 
         try {
             const response = await axios.get(url, {
@@ -139,7 +139,7 @@ function Dashboard(){
     };
 
     const getExpensesEntries = async () => {
-        const url = `http://localhost:8000/user/transactions/user_entries/?username=${username}`;
+        const url = `https://pennypal.up.railway.app/user/transactions/user_entries/?username=${username}`;
 
         try {
             const response = await axios.get(url, {
@@ -171,7 +171,7 @@ function Dashboard(){
     };
 
     const getBudgetEntries = async () => {
-        const url = `http://localhost:8000/user/budget/user_entries/?username=${username}`;
+        const url = `https://pennypal.up.railway.app/user/budget/user_entries/?username=${username}`;
 
         try {
             const response = await axios.get(url, {
@@ -215,7 +215,7 @@ function Dashboard(){
     }, [username, authToken]);
 
     const handleDeleteIncomeEntries = async () => {
-        const deleteUrl = `http://localhost:8000/user/income/user_entries/?username=${username}`;
+        const deleteUrl = `https://pennypal.up.railway.app/user/income/user_entries/?username=${username}`;
     
         try {
             const response = await axios.delete(deleteUrl, {
@@ -236,7 +236,7 @@ function Dashboard(){
     };
 
     const handleDeleteExpensesEntries = async () => {
-        const deleteUrl = `http://localhost:8000/user/transactions/user_entries/?username=${username}`;
+        const deleteUrl = `https://pennypal.up.railway.app/user/transactions/user_entries/?username=${username}`;
     
         try {
             const response = await axios.delete(deleteUrl, {
@@ -257,7 +257,7 @@ function Dashboard(){
     };
 
     const handleDeleteBudgetEntries = async () => {
-        const deleteUrl = `http://localhost:8000/user/budget/user_entries/?username=${username}`;
+        const deleteUrl = `https://pennypal.up.railway.app/user/budget/user_entries/?username=${username}`;
     
         try {
             const response = await axios.delete(deleteUrl, {

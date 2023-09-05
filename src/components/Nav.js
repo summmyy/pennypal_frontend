@@ -36,7 +36,7 @@ function Nav(){
 
     const handleLogout = async (event) => {
         event.preventDefault();
-        const url = 'http://127.0.0.1:8000/auth/token/logout'
+        const url = 'https://pennypal.up.railway.app/auth/token/logout'
         try{
         const response = await axios.post(url,{
                 username : username,

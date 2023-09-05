@@ -27,7 +27,7 @@ function Login(){
     const handleSubmit = async (event) => {
         event.preventDefault()
 
-        const url = 'http://127.0.0.1:8000/auth/token/login'
+        const url = 'https://pennypal.up.railway.app/auth/token/login'
 
         try{
             const response = await axios.post(url, {

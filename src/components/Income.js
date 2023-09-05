@@ -68,7 +68,7 @@ function Income() {
         const incomeTotals = parseFloat(incomeTotal) + numericAmount
     
         if (!isNaN(numericAmount) && numericAmount !== 0) {
-            const url = 'http://127.0.0.1:8000/user/income/';
+            const url = 'https://pennypal.up.railway.app/user/income/';
     
             try {
                 const response = await axios.post(url, {
@@ -105,7 +105,7 @@ function Income() {
 
     const handleDeleteLastEntry = async () => {
         try {
-            const deleteUrl = `http://127.0.0.1:8000/user/income/delete_last_entry/?username=${username}`;
+            const deleteUrl = `https://pennypal.up.railway.app/user/income/delete_last_entry/?username=${username}`;
     
             const response = await axios.delete(deleteUrl, {
                 headers: {

@@ -29,7 +29,7 @@ function SignUp(){
     const handleSubmit = async (event) =>{
         event.preventDefault()
 
-        const url = 'http://127.0.0.1:8000/auth/users/'
+        const url = 'https://pennypal.up.railway.app/auth/users/'
 
         try{
             const response = await axios.post(url, {
