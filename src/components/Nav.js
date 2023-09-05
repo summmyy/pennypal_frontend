@@ -78,7 +78,7 @@ function Nav(){
 
     return(
         <Box>
-        <Box width={{base : '100vw',xl : '27vw','2xl':'20vw'}} bgColor='#89CFF0' height='8vh'>
+        <Box width={{base : '100vw',xl : '27vw','2xl':'20vw'}} bgColor='#89CFF0' height={{base : '10vh',xl : '8vh','2xl':'8vh'}}>
                 <HStack paddingTop={3} paddingBottom={10} paddingLeft={5}>
                     <Box paddingRight={10}>
                     <IconButton
@@ -144,7 +144,7 @@ function Nav(){
                 </HStack>
         </Box>
                 <Collapse in={NavOpen} animateOpacity>
-                <Box  width={{base : '100vw',xl : '27vw','2xl':'20vw'}} bgColor='#89CFF0' height='140vh'>
+                <Box  width={{base : '100vw',xl : '27vw','2xl':'20vw'}} bgColor='#89CFF0' height='140vh' paddingTop={10}>
                     <VStack>
                         <Box paddingBottom={5}>
                             <Button width={{base : '100vw',xl : '27vw','2xl':'20vw'}} padding={6} borderRadius={0} onClick={(event) => {
